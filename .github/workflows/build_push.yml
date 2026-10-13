@@ -1,12 +1,16 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
     paths-ignore:
       - '**.md'
       - '.github/workflows/issue_moderator.yml'
+
+permissions:
+  contents: write
 
 concurrency:
   group: ${{ github.workflow }}
@@ -45,7 +49,7 @@ jobs:
 
       - name: Upload APKs
         uses: actions/upload-artifact@v4
-        if: "github.repository == 'suwayomi/tachiyomi-extension'"
+        if: "github.repository == 'privatepenguinzero/suwayomi-tachiyomi-extension'"
         with:
           name: "individual-apks"
           path: "**/*.apk"
@@ -58,7 +62,7 @@ jobs:
     name: Publish repo
     needs:
       - build_individual
-    if: "github.repository == 'suwayomi/tachiyomi-extension'"
+    if: "github.repository == 'privatepenguinzero/suwayomi-tachiyomi-extension'"
     runs-on: ubuntu-latest
     steps:
       - name: Download APK artifacts
